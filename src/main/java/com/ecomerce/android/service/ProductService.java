@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ecomerce.android.model.Product;
 
-@Service
 public interface ProductService {
 	Product save(Product entity);
 

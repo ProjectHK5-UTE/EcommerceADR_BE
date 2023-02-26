@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ecomerce.android.controller.ProductController;
 
-@SpringBootApplication()
+@SpringBootApplication
 public class EcomerceAdrBeApplication {
 
 	public static void main(String[] args) {
