@@ -1,5 +1,7 @@
 package com.ecomerce.android.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,14 +9,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecomerce.android.dto.EmailDTO;
+import com.ecomerce.android.dto.ResponseDTO;
 import com.ecomerce.android.jwt.service.JwtService;
 import com.ecomerce.android.model.User;
+import com.ecomerce.android.sendmail.OtpService;
 import com.ecomerce.android.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,6 +34,14 @@ public class UserController {
 
 	@Autowired(required = false)
 	private UserService userService;
+	
+	@Autowired
+	private OtpService otpService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	ResponseDTO responseDTO = new ResponseDTO();
 
 	/* ---------------- GET ALL USER ------------------------ */
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -45,15 +60,40 @@ public class UserController {
 	}
 
 	/* ---------------- CREATE NEW USER ------------------------ */
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<String> createUser(@RequestBody User user) {
-		User entity = new User();
-		BeanUtils.copyProperties(user, entity);
-		if (userService.save(entity)) {
-			return new ResponseEntity<String>("Created!", HttpStatus.CREATED);
+	User User;
+	
+	@RequestMapping(value = "/SignUp", method = RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> sendMail(@RequestBody User user) {	
+		
+		if(otpService.generateOtp(user.getEmail(), responseDTO)) {
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			user.setRole("ROLE_USER");
+			User = user;
+			responseDTO.setHttpcode(HttpStatus.CREATED);
 		} else {
-			return new ResponseEntity<String>("User Existed!", HttpStatus.BAD_REQUEST);
+			responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
 		}
+		
+		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);
+	}
+	
+	@RequestMapping(value = "/SignUp/Verify", method = RequestMethod.POST)
+	public ResponseEntity<ResponseDTO> createUser(@RequestParam Integer otp, @RequestParam String email) {
+		
+
+		if(otpService.validateOTP(email, otp, responseDTO)) {	
+			if(userService.save(User)) {
+				responseDTO.setMessage("Create User Success!!");
+				responseDTO.setHttpcode(HttpStatus.CREATED);
+			}else {
+				responseDTO.setMessage("Wrong When Save User!!");
+				responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			
+			responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
+		}	
+		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);
 	}
 
 	/* ---------------- DELETE USER ------------------------ */
@@ -64,22 +104,30 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody User user) {
-		String result = "";
-		HttpStatus httpStatus = null;
+	public ResponseEntity<ResponseDTO> login(HttpServletRequest request, @RequestBody User user) throws IOException {
+	
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("");
+		responseDTO.setHttpcode(null);
 		// Example<User> entity = Example.of(user);
 		try {
 			if (userService.checkLogin(user)) {
-				result = jwtService.generateTokenLogin(user.getEmail());
-				httpStatus = HttpStatus.OK;
+				responseDTO.setMessage(jwtService.generateTokenLogin(user.getEmail()));
+				responseDTO.setHttpcode(HttpStatus.OK);
 			} else {
-				result = "Wrong userId and password";
-				httpStatus = HttpStatus.BAD_REQUEST;
+				responseDTO.setMessage("Wrong userId or password");
+				responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception ex) {
-			result = "Server Error";
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDTO.setMessage("Server Error");
+			responseDTO.setHttpcode(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<String>(result, httpStatus);
+		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);
 	}
+	
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+    public ResponseEntity<String> logout(HttpServletRequest request, @RequestBody User user){
+		return null;
+       
+    }
 }

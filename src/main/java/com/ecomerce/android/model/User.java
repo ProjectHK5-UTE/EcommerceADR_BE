@@ -32,7 +32,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
-
+	private static final long OTP_VALID_DURATION = 5 * 60 * 1000;   // 5 minutes
+	
 	@Id
 	private int user_ID;
 
@@ -54,8 +55,7 @@ public class User implements UserDetails {
 	//bi-directional many-to-one association to Customer
 	@OneToMany(mappedBy="user")
 	private List<Customer> customers;
-
-
+    
 	public Customer addCustomer(Customer customer) {
 		getCustomers().add(customer);
 		customer.setUser(this);
@@ -82,11 +82,6 @@ public class User implements UserDetails {
 //		return null;
 //	}
 
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -112,4 +107,14 @@ public class User implements UserDetails {
 		return false;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return userName;
+	}
+	
 }

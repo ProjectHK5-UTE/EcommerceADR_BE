@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ecomerce.android.model.User;
@@ -29,10 +31,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean checkLogin(User user) {
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
 		List<User> listUser = userRepository.findAll();
 		for (User userExist : listUser) {
 			if (StringUtils.equals(user.getEmail(), userExist.getEmail())
-					&& StringUtils.equals(user.getPassword(), userExist.getPassword())) {
+					&& passwordEncoder.matches(user.getPassword(), userExist.getPassword())) {
 				return true;
 			}
 		}
@@ -44,6 +48,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	public Optional<User> loadUserByEmail(String email) { 
+//		GrantedAuthority authority = new SimpleGrantedAuthority(userPojo.getRole());
+//		UserDetails userDetails = (UserDetails) new User(userPojo.getUsername(),
+//		userPojo.getPassword(), Arrays.asList(authority));
 		return userRepository.getByEmail(email);
 	}
 
