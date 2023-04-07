@@ -15,13 +15,13 @@ public interface UserService{
 
 	public boolean checkLogin(User user);
 
-	Optional<User> findById(Integer id);
+	Optional<User> findById(String userName);
 
 	public <S extends User> boolean save(S entity); 
 	
 	Optional<User> loadUserByEmail(String email);
 	
-	public void deleteById(Integer id);
+	public void deleteById(String userName);
 	
 	public List<User> findAll();
 	

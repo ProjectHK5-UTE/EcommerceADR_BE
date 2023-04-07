@@ -11,6 +11,6 @@ public interface BrandService {
 
 	List<Brand> findAll();
 
-	Optional<Brand> findById(String id);
+	Optional<Brand> findById(Integer id);
 
 }

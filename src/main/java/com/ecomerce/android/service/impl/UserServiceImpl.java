@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 		return userRepository.save(entity) != null;
 	}
 
-	public Optional<User> findById(Integer id) {
-		return userRepository.findById(id);
+	public Optional<User> findById(String userName) {
+		return userRepository.findById(userName);
 	}
 
 	public boolean checkLogin(User user) {
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getByEmail(email);
 	}
 
-	public void deleteById(Integer id) {
-		userRepository.deleteById(id);
+	public void deleteById(String userName) {
+		userRepository.deleteById(userName);
 	}
 
 	public List<User> findAll() {

@@ -17,6 +17,5 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		// TODO Auto-generated method stub
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	    response.getWriter().write("Unauthorized");
-		
 	}
 }

@@ -39,11 +39,12 @@ public class SecurityConfiguration   {
 		http.authorizeHttpRequests().requestMatchers("/api/user/login**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/show-id").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp**").permitAll();
+//		http.authorizeHttpRequests().requestMatchers("/api/user/users**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp/Verify**").permitAll();
 		http.httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-				.requestMatchers(HttpMethod.GET, "/api/user/users**").hasAnyRole("USER","ADMIN")
-				.requestMatchers(HttpMethod.POST, "/api/user/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/api/user/users**").hasAnyRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/api/user/**").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE, "/api/user/**").hasRole("ADMIN").and()
 				.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());

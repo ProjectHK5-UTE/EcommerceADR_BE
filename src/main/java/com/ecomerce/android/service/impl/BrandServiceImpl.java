@@ -21,7 +21,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 
-	public Optional<Brand> findById(String id) {
+	public Optional<Brand> findById(Integer id) {
 		return brandReponsitory.findById(id);
 	}
 }

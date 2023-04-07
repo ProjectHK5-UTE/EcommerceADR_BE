@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.annotation.Transient;
@@ -18,24 +17,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
-/**
- * The persistent class for the user database table.
- * 
- */
 @Entity
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	private static final long OTP_VALID_DURATION = 5 * 60 * 1000;   // 5 minutes
 	
 	@Id
-	private int user_ID;
+	@Column(name = "user_name")
+	private String userName;
 
 	@Column(name="created_at")
 	private Timestamp createdAt;
@@ -49,26 +43,9 @@ public class User implements UserDetails {
 	@Column(name="update_at")
 	private Timestamp updateAt;
 
-	@Column(name="user_name")
-	private String userName;
+	@OneToOne(mappedBy="user")
+	private Customer customer;
 
-	//bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy="user")
-	private List<Customer> customers;
-    
-	public Customer addCustomer(Customer customer) {
-		getCustomers().add(customer);
-		customer.setUser(this);
-
-		return customer;
-	}
-
-	public Customer removeCustomer(Customer customer) {
-		getCustomers().remove(customer);
-		customer.setUser(null);
-
-		return customer;
-	}
 	
 	@Transient
 	public List<GrantedAuthority> getAuthorities() {
