@@ -1,8 +1,15 @@
 package com.ecomerce.android.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.ecomerce.android.dto.BrandDTO;
+import com.ecomerce.android.dto.ProductDTO;
+import com.ecomerce.android.mapper.Mapper;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,22 +21,37 @@ import com.ecomerce.android.service.ProductService;
 public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductReponsitory productReponsitory;
+	@Autowired
+	private Mapper productMapper;
 
-	public Product save( Product entity) {
-		return productReponsitory.save(entity);
+	@Override
+	public List<ProductDTO> findAll() {
+		return productReponsitory.findAll()
+				.stream()
+				.map(product -> productMapper.convertTo(product, ProductDTO.class))
+				.collect(Collectors.toList());
 	}
 
-	public List<Product> findAll() {
-		return productReponsitory.findAll();
+	public ProductDTO findById(Integer id) {
+		Optional<Product> product = productReponsitory.findById(id);
+		if(product.isPresent()) {
+			return productMapper.convertTo(product, ProductDTO.class);
+		}
+		else {
+			return null;
+		}
 	}
 
-	public Optional<Product> findById(Integer id) {
-		return productReponsitory.findById(id);
+	@Override
+	public List<BrandDTO> getAllBrand() {
+		return null;
 	}
 
-	public void delete(Product entity) {
-		productReponsitory.delete(entity);
+	@Override
+	public List<ProductDTO> getProductByBrand(Integer brandId) {
+		return productReponsitory.getProductByBrand(brandId)
+				.stream()
+				.map(product -> productMapper.convertTo(product, ProductDTO.class))
+				.collect(Collectors.toList());
 	}
-	
-	
 }

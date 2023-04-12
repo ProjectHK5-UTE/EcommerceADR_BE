@@ -1,5 +1,6 @@
 package com.ecomerce.android.model;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,8 +28,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Customer {
 	@Id
 	@Column(name="user_name")
 	private String userName;

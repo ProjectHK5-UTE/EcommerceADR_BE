@@ -1,12 +1,15 @@
 package com.ecomerce.android.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecomerce.android.dto.UserDTO;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.ecomerce.android.model.User;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface UserService{
@@ -15,7 +18,7 @@ public interface UserService{
 
 	public boolean checkLogin(User user);
 
-	Optional<User> findById(String userName);
+	UserDTO findById(String userName);
 
 	public <S extends User> boolean save(S entity); 
 	
@@ -23,6 +26,6 @@ public interface UserService{
 	
 	public void deleteById(String userName);
 	
-	public List<User> findAll();
-	
+	public List<UserDTO> findAll();
+
 }

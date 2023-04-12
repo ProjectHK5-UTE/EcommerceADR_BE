@@ -33,6 +33,9 @@ public class Brand implements Serializable {
 
 	private String logo;
 
+	@Column(name = "image_data")
+	private byte[] image_data;
+
 	@Column(name="update_at")
 	private Timestamp updateAt;
 

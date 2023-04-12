@@ -1,8 +1,18 @@
 package com.ecomerce.android.service.impl;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
+import com.ecomerce.android.dto.ImageDTO;
+import com.ecomerce.android.dto.UserDTO;
+import com.ecomerce.android.mapper.Mapper;
+import com.ecomerce.android.model.Customer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,9 +22,7 @@ import org.springframework.stereotype.Service;
 import com.ecomerce.android.model.User;
 import com.ecomerce.android.responsitory.UserRepository;
 import com.ecomerce.android.service.UserService;
-
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -22,12 +30,20 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	Mapper mapper;
+
 	public <S extends User> boolean save(S entity) {
 		return userRepository.save(entity) != null;
 	}
 
-	public Optional<User> findById(String userName) {
-		return userRepository.findById(userName);
+	public UserDTO findById(String userName) {
+		Optional<User> user = userRepository.findById(userName);
+		if(user.isPresent())
+			return mapper.convertTo(user, UserDTO.class);
+		else {
+			return null;
+		}
 	}
 
 	public boolean checkLogin(User user) {
@@ -58,8 +74,11 @@ public class UserServiceImpl implements UserService {
 		userRepository.deleteById(userName);
 	}
 
-	public List<User> findAll() {
-		return userRepository.findAll();
+	public List<UserDTO> findAll() {
+		return userRepository.findAll()
+				.stream()
+				.map(user -> mapper.convertTo(user, UserDTO.class))
+				.collect(Collectors.toList());
 	}
 
 }

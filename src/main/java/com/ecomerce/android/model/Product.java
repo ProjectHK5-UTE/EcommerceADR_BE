@@ -47,7 +47,7 @@ public class Product implements Serializable {
 	@Column(name="update_at")
 	private Timestamp updateAt;
 
-	@OneToMany(mappedBy="product")
+	@OneToMany(mappedBy="product", fetch = FetchType.LAZY)
 	private List<Option> options;
 
 	@ManyToOne(fetch = FetchType.LAZY)

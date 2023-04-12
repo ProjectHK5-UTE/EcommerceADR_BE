@@ -1,14 +1,10 @@
 package com.ecomerce.android.responsitory;
 
+import com.ecomerce.android.model.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ecomerce.android.model.Brand;
-
-
-
-
 @Repository
-public interface BrandReponsitory extends JpaRepository<Brand, Integer>{
+public interface OptionRepository extends JpaRepository<Option, Integer> {
 
 }
