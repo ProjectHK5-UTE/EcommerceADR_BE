@@ -9,7 +9,7 @@ import com.ecomerce.android.model.Brand;
 
 
 @Repository
-public interface BrandReponsitory extends JpaRepository<Brand, String>{
+public interface BrandReponsitory extends JpaRepository<Brand, Integer>{
 	
 	
 }

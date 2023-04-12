@@ -51,8 +51,8 @@ public class UserController {
 
 	/* ---------------- GET USER BY ID ------------------------ */
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Object> getUserById(@PathVariable Integer id) {
-		Optional<User> user = userService.findById(id);
+	public ResponseEntity<Object> getUserById(@PathVariable("id") String userName) {
+		Optional<User> user = userService.findById(userName);
 		if (user != null) {
 			return new ResponseEntity<Object>(user, HttpStatus.OK);
 		}
@@ -67,8 +67,10 @@ public class UserController {
 		
 		if(otpService.generateOtp(user.getEmail(), responseDTO)) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			user.setRole("ROLE_USER");
+			user.setRole("ROLE_ADMIN");
 			User = user;
+			userService.save(User);
+			System.out.println(User.getUserName() + " " + User.getEmail());
 			responseDTO.setHttpcode(HttpStatus.CREATED);
 		} else {
 			responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
@@ -79,8 +81,6 @@ public class UserController {
 	
 	@RequestMapping(value = "/SignUp/Verify", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> createUser(@RequestParam Integer otp, @RequestParam String email) {
-		
-
 		if(otpService.validateOTP(email, otp, responseDTO)) {	
 			if(userService.save(User)) {
 				responseDTO.setMessage("Create User Success!!");
@@ -98,18 +98,17 @@ public class UserController {
 
 	/* ---------------- DELETE USER ------------------------ */
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteUserById(@PathVariable Integer id) {
-		userService.deleteById(id);
+	public ResponseEntity<String> deleteUserById(@PathVariable("id") String userName) {
+		userService.deleteById(userName);
 		return new ResponseEntity<String>("Deleted!", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> login(HttpServletRequest request, @RequestBody User user) throws IOException {
-	
 		ResponseDTO responseDTO = new ResponseDTO();
 		responseDTO.setMessage("");
 		responseDTO.setHttpcode(null);
-		// Example<User> entity = Example.of(user);
+
 		try {
 			if (userService.checkLogin(user)) {
 				responseDTO.setMessage(jwtService.generateTokenLogin(user.getEmail()));

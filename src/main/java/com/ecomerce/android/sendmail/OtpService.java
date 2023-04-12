@@ -15,8 +15,6 @@ import java.util.Optional;
 
 @Service
 public class OtpService {
-
-
     private OtpGenerator otpGenerator;
     private EmailService emailService;
     private UserService userService;
@@ -55,7 +53,7 @@ public class OtpService {
 			String userEmail = key;
 			if (user.isPresent()) {
 				responseDTO.setMessage("The email already exists!!!");
-				System.out.print("okok");
+				System.out.print("ok ok");
 				return false;
 			}
 			List<String> recipients = new ArrayList<>();

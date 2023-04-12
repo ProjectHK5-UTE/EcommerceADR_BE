@@ -11,7 +11,7 @@ import com.ecomerce.android.model.User;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, QueryByExampleExecutor<User>{
+public interface UserRepository extends JpaRepository<User, String>, QueryByExampleExecutor<User>{
 	Optional<User> getByEmail(String email);
 
 }

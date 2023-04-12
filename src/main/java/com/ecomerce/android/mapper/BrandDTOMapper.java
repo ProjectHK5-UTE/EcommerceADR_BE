@@ -7,14 +7,14 @@ import org.mapstruct.factory.Mappers;
 import com.ecomerce.android.dto.BrandDTO;
 import com.ecomerce.android.model.Brand;
 
-@Mapper(componentModel = "spring")
-public interface BrandDTOMapper {
-
-		BrandDTOMapper INSTANCE = Mappers.getMapper(BrandDTOMapper.class );
-
-	    @Mapping(source = "brand_ID", target = "brand_ID")
-	    BrandDTO brandmap(Brand brand);
-}
+//@Mapper(componentModel = "spring")
+//public interface BrandDTOMapper {
+//
+//		BrandDTOMapper INSTANCE = Mappers.getMapper(BrandDTOMapper.class );
+//
+//	    @Mapping(source = "brand_ID", target = "brand_ID")
+//	    BrandDTO brandmap(Brand brand);
+//}
 
 
 //@Service
