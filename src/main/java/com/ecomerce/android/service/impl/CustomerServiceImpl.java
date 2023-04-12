@@ -34,12 +34,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
     @Override
     public String changeAvatar(String name, MultipartFile file) throws IOException {
-        UUID uuid = UUID.randomUUID();
-        String uuString = uuid.toString();
-        String filename = storageService.getStorageFilename(file, uuString);
-        storageService.store(file, filename); // Luu file
         Boolean isUser = customerRepository.findById(name).isPresent();
         if(isUser) {
+            UUID uuid = UUID.randomUUID();
+            String uuString = uuid.toString();
+            String filename = storageService.getStorageFilename(file, uuString);
+            storageService.store(file, filename); // Luu file
             // update file
             Customer customer = customerRepository.findById(name).get();
             customer.setAvatar(filename);
