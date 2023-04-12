@@ -2,17 +2,19 @@ package com.ecomerce.android.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import com.ecomerce.android.config.uploadFile.IStorageService;
 import com.ecomerce.android.dto.BrandDTO;
 import com.ecomerce.android.mapper.Mapper;
 import com.ecomerce.android.responsitory.ProductReponsitory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import com.ecomerce.android.model.Brand;
@@ -35,6 +37,9 @@ public class BrandServiceImpl implements BrandService {
 	@Autowired
 	private Mapper mapper;
 
+	@Autowired
+	Cloudinary cloudinary;
+
 	@Override
 	public List<BrandDTO> findAll() {
 		List<Object[]> objs = productReponsitory.getAllBrand();
@@ -55,41 +60,26 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 	@Override
-	public String getUrlFile(String filename) {
-		Resource file = storageService.loadAsResource(filename);
-		return file.getFilename();
-	}
-	@Override
-	public String save(String name, MultipartFile file) {
-		// Trường hợp thêm
-		UUID uuid = UUID.randomUUID();
-		String uuString = uuid.toString();
-		String filename = storageService.getStorageFilename(file, uuString);
-		storageService.store(file, filename); // Luu file
-		byte[] resource;
-		try {
-			resource = file.getBytes();
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
+	public Boolean insert(String name, MultipartFile file) throws IOException {
+		List<Brand> listBrandByName = brandReponsitory.findByName(name);
+		if(listBrandByName.size() >= 1) {
+			return false;
 		}
 
+		Map r = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("public_id", name));
+//		String url = cloudinary.url().transformation(new Transformation().width(600).height(500).crop("limit")).generate(name);
+		String url = cloudinary.url().generate(name);
 
 		Brand brand = Brand.builder()
 				.name(name)
-				.logo(filename)
-				.image_data(resource).build();
-		/*
-		*  if(...) // Update
-		*		if(kiem tra file da có hay chua)
-		* 			findbyId
-		* 			if(da co hinh)
-		* 				-- Xoa hinh
-		* 			else // chua co
-		*
-		*
-		*
-		*/
-		return brandReponsitory.save(brand) != null ? filename : "";
+				.logo(url)
+				.build();
+
+		if(brandReponsitory.save(brand) != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

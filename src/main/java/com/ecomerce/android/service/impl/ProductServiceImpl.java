@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDTO findById(Integer id) {
 		Optional<Product> product = productReponsitory.findById(id);
 		if(product.isPresent()) {
-			return productMapper.convertTo(product, ProductDTO.class);
+			return productMapper.convertTo(product.get(), ProductDTO.class);
 		}
 		else {
 			return null;

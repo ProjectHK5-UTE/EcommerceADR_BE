@@ -1,8 +1,9 @@
 package com.ecomerce.android.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.Transformation;
-import com.cloudinary.utils.ObjectUtils;
+import com.ecomerce.android.config.uploadFile.IStorageService;
+import com.ecomerce.android.dto.CustomerDTO;
+import com.ecomerce.android.mapper.Mapper;
 import com.ecomerce.android.model.Customer;
 import com.ecomerce.android.responsitory.CustomerRepository;
 import com.ecomerce.android.service.CustomerService;
@@ -11,8 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -20,20 +20,35 @@ public class CustomerServiceImpl implements CustomerService {
     Cloudinary cloudinary;
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    IStorageService storageService;
+
+    @Autowired
+    Mapper mapper;
+
+    @Override
+    public CustomerDTO getCustomerById(String name) {
+        Customer customer = customerRepository.findById(name).get();
+        return mapper.convertTo(customer, CustomerDTO.class);
+    }
     @Override
     public String changeAvatar(String name, MultipartFile file) throws IOException {
-        Map r = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("public_id", "olympic_flag"));
-        String url = cloudinary.url().transformation(new Transformation().width(600).height(500).crop("limit")).generate("olympic_flag");
-        Optional<Customer> customer = customerRepository.findById(name);
-        if(customer.isPresent()) {
-            // Có
-            Customer customerUpdate = customer.get();
-            customerUpdate.setAvatar(url);
-            customerRepository.save(customerUpdate);
-            return url;
+        UUID uuid = UUID.randomUUID();
+        String uuString = uuid.toString();
+        String filename = storageService.getStorageFilename(file, uuString);
+        storageService.store(file, filename); // Luu file
+        Boolean isUser = customerRepository.findById(name).isPresent();
+        if(isUser) {
+            // update file
+            Customer customer = customerRepository.findById(name).get();
+            customer.setAvatar(filename);
+            customerRepository.save(customer);
+            return "Success";
         }
-        else {
-            return "";
+        else  {
+            return "Failed";
         }
+
     }
 }

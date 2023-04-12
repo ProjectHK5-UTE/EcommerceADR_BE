@@ -37,12 +37,14 @@ public class BrandController {
 	}
 
 
-	@PostMapping(value = "/brand/upload-file")
-	public ResponseEntity<?> uploadFile(@RequestParam("name") String name,
+	@PostMapping(value = "/brand")
+	public ResponseEntity<?> insert(@RequestParam("name") String name,
 										@RequestParam("images") MultipartFile file) throws IOException {
-		if(!file.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.OK).body(brandService.save(name, file));
+		if(brandService.insert(name, file)) {
+			return ResponseEntity.status(HttpStatus.CREATED).body("Success");
 		}
-		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("File khong hop le!");
+		else {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Failed");
+		}
 	}
 }

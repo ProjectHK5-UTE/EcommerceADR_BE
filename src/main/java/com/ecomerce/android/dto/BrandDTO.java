@@ -13,18 +13,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandDTO {
-//	private int brandId;
-//	private String logo;
-//	private byte[] image_data;
-//	private Integer productAmount;
 
 	private Integer brandId;
 
 	private String name;
 
 	private String logo;
-
-	private byte[] image_data;
 
 	private Integer productAmount;
 }

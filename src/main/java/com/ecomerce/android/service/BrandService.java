@@ -1,5 +1,6 @@
 package com.ecomerce.android.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,6 @@ public interface BrandService {
 
 	Optional<Brand> findById(Integer id);
 
-    String getUrlFile(String filename);
 
-    String save(String name, MultipartFile file);
+	Boolean insert(String name, MultipartFile file) throws IOException;
 }
