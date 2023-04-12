@@ -22,7 +22,7 @@ public class Option implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "options_ID")
-	private Integer optionId;
+	private int optionId;
 
 	private String ram;
 
@@ -32,18 +32,13 @@ public class Option implements Serializable {
 
 	private Integer status;
 
-	//bi-directional many-to-one association to Image
 	@OneToMany(mappedBy="option")
 	private List<Image> images;
-
 	@OneToMany(mappedBy="option")
 	private List<Lineitem> lineitems;
 
-	//bi-directional many-to-one association to Product
+
 	@ManyToOne
 	@JoinColumn(name="productId")
 	private Product product;
-
-
-
 }

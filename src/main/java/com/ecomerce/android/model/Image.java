@@ -30,8 +30,7 @@ public class Image implements Serializable {
 	@Column(name="update_at")
 	private Timestamp updateAt;
 
-	//bi-directional many-to-one association to Option
 	@ManyToOne
-	@JoinColumn(name="optionId")
+	@JoinColumn(name = "options_ID")
 	private Option option;
 }

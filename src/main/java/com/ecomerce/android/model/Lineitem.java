@@ -30,12 +30,12 @@ public class Lineitem implements Serializable {
 	private Timestamp updateAt;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="orderId")
 	private Order order;
 
 	//bi-directional many-to-one association to Product
-	@ManyToOne
-	@JoinColumn(name="optionId")
+	@ManyToOne()
+	@JoinColumn(name = "options_ID")
 	private Option option;
 }

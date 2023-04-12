@@ -3,16 +3,21 @@ package com.ecomerce.android.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.ecomerce.android.dto.BrandDTO;
+import com.ecomerce.android.dto.ProductDTO;
 import org.springframework.stereotype.Service;
 
 import com.ecomerce.android.model.Product;
 
 public interface ProductService {
-	Product save(Product entity);
 
-	List<Product> findAll();
+	List<ProductDTO> findAll();
 
-	Optional<Product> findById(Integer id);
+	ProductDTO findById(Integer id);
 
-	void delete(Product entity);
+
+	List<BrandDTO> getAllBrand();
+
+	List<ProductDTO>  getProductByBrand(Integer brandId);
+
 }

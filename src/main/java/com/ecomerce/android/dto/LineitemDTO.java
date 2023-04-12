@@ -1,24 +1,17 @@
 package com.ecomerce.android.dto;
 
-
+import com.ecomerce.android.model.Option;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class BrandDTO {
-
-	private Integer brandId;
-
-	private String name;
-
-	private String logo;
-
-	private Integer productAmount;
+@AllArgsConstructor
+public class LineitemDTO {
+    private Integer lineItemId;
+    private Integer quantity;
+    private OptionDTO option;
 }

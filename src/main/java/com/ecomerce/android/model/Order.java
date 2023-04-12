@@ -1,6 +1,11 @@
 package com.ecomerce.android.model;
 
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +20,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="orders")
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -39,7 +45,7 @@ public class Order implements Serializable {
 	@OneToMany(mappedBy="order")
 	private List<Lineitem> lineitems;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userName")
 	private Customer customer;
 }

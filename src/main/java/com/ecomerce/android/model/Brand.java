@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Brand implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="brand_ID")
@@ -30,7 +29,6 @@ public class Brand implements Serializable {
 	private Timestamp createdAt;
 
 	private String name;
-
 	private String logo;
 
 	@Column(name="update_at")

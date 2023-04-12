@@ -1,24 +1,20 @@
 package com.ecomerce.android.dto;
 
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class BrandDTO {
+@AllArgsConstructor
+public class UserDTO {
+    private String userName;
 
-	private Integer brandId;
+    private String email;
 
-	private String name;
+    private String password;
 
-	private String logo;
-
-	private Integer productAmount;
+    private String role;
 }
