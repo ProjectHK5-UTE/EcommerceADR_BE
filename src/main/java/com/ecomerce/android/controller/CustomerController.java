@@ -12,10 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/customer")
+@RequestMapping("/api")
 public class CustomerController {
 
     @Autowired
@@ -23,7 +22,7 @@ public class CustomerController {
     @Autowired
     IStorageService storageService;
 
-    @GetMapping("/image/{id}")
+    @GetMapping("/customer/image/{id}")
     public ResponseEntity<Resource> getImage(@PathVariable("id") String name) {
         CustomerDTO customer = customerService.getCustomerById(name);
         String filename = customer.getAvatar();
@@ -40,9 +39,25 @@ public class CustomerController {
     }
 
     // Change Avatar Customer - Cloud
-    @PostMapping(value = "/change-avatar")
+    @PostMapping(value = "/customer/change-avatar")
     public ResponseEntity<?> changeAvatar(@RequestParam("name") String name,
-                                          @RequestParam("images") MultipartFile file) throws IOException {
-        return ResponseEntity.status(HttpStatus.OK).body(customerService.changeAvatar(name, file));
+                                          @RequestParam("images") MultipartFile file) throws Exception {
+        if(customerService.changeAvatar(name, file)) {
+            return ResponseEntity.status(HttpStatus.OK).body("Success");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Failed");
+        }
+    }
+
+    @GetMapping(value = "/customer/{name}")
+    public  ResponseEntity<?> getCustomerInfor(@PathVariable("name") String name)  {
+        CustomerDTO customerDTO = customerService.getCustomerById(name);
+        if(customerDTO != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(customerDTO);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed");
+        }
     }
 }
