@@ -25,4 +25,8 @@ public interface ProductService {
     List<ProductDTO> getRelatedProduct(Integer productId);
 
     List<ProductDTO> searchProduct(String keyword);
+
+    List<ProductDTO> filterProduct(double startPrice, double endPrice,
+                                   int startBattery, int endBattery,
+                                   double startScreen, double endScreen);
 }

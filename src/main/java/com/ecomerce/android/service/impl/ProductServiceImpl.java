@@ -1,5 +1,6 @@
 package com.ecomerce.android.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -98,5 +99,25 @@ public class ProductServiceImpl implements ProductService {
 				.stream()
 				.map(product -> productMapper.convertTo(product, ProductDTO.class))
 				.collect(Collectors.toList()) : null;
+	}
+
+	@Override
+	public List<ProductDTO> filterProduct(double startPrice, double endPrice,
+										  int startBattery, int endBattery,
+										  double startScreen, double endScreen) {
+		List<Product> listFilterProduct = productReponsitory.findAll();
+		List<Product> filterPrice = productReponsitory.findByPriceBetween(startPrice, endPrice);
+		System.out.println(filterPrice.size());
+		List<Product> filterBattery = productReponsitory.findByBatteryRange(startBattery, endBattery);
+		System.out.println(filterBattery.size());
+		List<Product> filterScreen = productReponsitory.findByScreenSizeRange(startScreen, endScreen);
+		System.out.println(filterScreen.size());
+
+		return listFilterProduct.stream()
+				.filter(filterPrice::contains)
+				.filter(filterBattery::contains)
+				.filter(filterScreen::contains)
+				.map(product -> productMapper.convertTo(product, ProductDTO.class))
+				.collect(Collectors.toList());
 	}
 }
