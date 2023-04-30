@@ -19,6 +19,7 @@ public class Lineitem implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "lineitem_ID")
 	private Integer lineItemId;
 
@@ -31,7 +32,7 @@ public class Lineitem implements Serializable {
 	private Timestamp updateAt;
 
 	//bi-directional many-to-one association to Order
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="orderId")
 	private Order order;
 
