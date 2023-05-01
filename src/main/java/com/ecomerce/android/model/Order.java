@@ -33,9 +33,6 @@ public class Order implements Serializable {
 	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="order_date")
-	private Timestamp orderDate;
-
 	@Column(name="total_price")
 	private double totalPrice;
 
@@ -43,7 +40,7 @@ public class Order implements Serializable {
 	private Timestamp updateAt;
 
 
-	@OneToMany(mappedBy="order")
+	@OneToMany(mappedBy="order", cascade = CascadeType.PERSIST)
 	private List<Lineitem> lineitems;
 
 	@ManyToOne(fetch = FetchType.LAZY)

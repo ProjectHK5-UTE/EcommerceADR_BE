@@ -60,4 +60,27 @@ public class ProductController {
 	public ResponseEntity<?> getPopularProduct() {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.getPopularProduct());
 	}
+
+	@GetMapping(value = "/product/search")
+	public ResponseEntity<?> searchProduct(@RequestParam("keyword") String keyword) {
+		if(productService.searchProduct(keyword) == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không có sản phẩm nào");
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.OK).body(productService.searchProduct(keyword));
+		}
+	}
+
+	@GetMapping(value = "/product/filter")
+	public ResponseEntity<?> filterProduct(@RequestParam("start-price") double startPrice,
+										   @RequestParam("end-price") double endPrice,
+										   @RequestParam("start-battery") int startBattery,
+										   @RequestParam("end-battery") int endBattery,
+										   @RequestParam("start-screen") double startScreen,
+										   @RequestParam("end-screen") double endScreen
+	) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+				productService.filterProduct(startPrice, endPrice, startBattery, endBattery, startScreen, endScreen)
+		);
+	}
 }

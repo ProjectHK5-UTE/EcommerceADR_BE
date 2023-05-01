@@ -1,10 +1,10 @@
 package com.ecomerce.android.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.ecomerce.android.dto.BrandDTO;
 import com.ecomerce.android.dto.ProductDTO;
 import com.ecomerce.android.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
 			for(Product p : listProductByBrand) {
 				boolean exist = listRelatedProduct
 						.stream()
-						.anyMatch(product -> product.getProductId() ==  p.getProductId());
+						.anyMatch(product -> product.getProductId() == p.getProductId());
 				if(!exist) {
 					listRelatedProduct.add(p);
 				}
@@ -87,6 +87,36 @@ public class ProductServiceImpl implements ProductService {
 		}
 
 		return listRelatedProduct.stream()
+				.map(product -> productMapper.convertTo(product, ProductDTO.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<ProductDTO> searchProduct(String keyword) {
+		List<Product> result = productReponsitory.searchProduct(keyword);
+
+		return result.size() > 0 ? productReponsitory.searchProduct(keyword)
+				.stream()
+				.map(product -> productMapper.convertTo(product, ProductDTO.class))
+				.collect(Collectors.toList()) : null;
+	}
+
+	@Override
+	public List<ProductDTO> filterProduct(double startPrice, double endPrice,
+										  int startBattery, int endBattery,
+										  double startScreen, double endScreen) {
+		List<Product> listFilterProduct = productReponsitory.findAll();
+		List<Product> filterPrice = productReponsitory.findByPriceBetween(startPrice, endPrice);
+		System.out.println(filterPrice.size());
+		List<Product> filterBattery = productReponsitory.findByBatteryRange(startBattery, endBattery);
+		System.out.println(filterBattery.size());
+		List<Product> filterScreen = productReponsitory.findByScreenSizeRange(startScreen, endScreen);
+		System.out.println(filterScreen.size());
+
+		return listFilterProduct.stream()
+				.filter(filterPrice::contains)
+				.filter(filterBattery::contains)
+				.filter(filterScreen::contains)
 				.map(product -> productMapper.convertTo(product, ProductDTO.class))
 				.collect(Collectors.toList());
 	}
