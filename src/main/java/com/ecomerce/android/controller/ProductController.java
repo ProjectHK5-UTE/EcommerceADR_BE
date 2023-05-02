@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecomerce.android.service.ProductService;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 @RestController
@@ -20,6 +22,9 @@ import com.ecomerce.android.service.ProductService;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
+	private Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
 	// Lấy tất cả sản phẩm theo brandId
 	@GetMapping(value = "/product/{brandId}")
@@ -53,12 +58,12 @@ public class ProductController {
 
 	@GetMapping(value = "/product/lasted-product")
 	public ResponseEntity<?> getLastedProduct() {
-		return ResponseEntity.status(HttpStatus.OK).body(productService.getLastedProduct());
+		return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(productService.getLastedProduct()));
 	}
 
 	@GetMapping(value = "/product/popular-product")
 	public ResponseEntity<?> getPopularProduct() {
-		return ResponseEntity.status(HttpStatus.OK).body(productService.getPopularProduct());
+		return ResponseEntity.status(HttpStatus.OK).body(gson.toJson(productService.getPopularProduct()));
 	}
 
 	@GetMapping(value = "/product/search")

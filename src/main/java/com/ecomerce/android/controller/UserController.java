@@ -72,7 +72,7 @@ public class UserController {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setRole("ROLE_ADMIN");
 			User = user;
-			userService.save(User);
+			System.out.print(user.getEmail());
 			System.out.println(User.getUserName() + " " + User.getEmail());
 			responseDTO.setHttpcode(HttpStatus.CREATED);
 		} else {
