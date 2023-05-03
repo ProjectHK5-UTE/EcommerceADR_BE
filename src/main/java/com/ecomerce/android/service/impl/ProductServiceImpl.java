@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
 	public ProductDTO findById(Integer id) {
 		Optional<Product> product = productReponsitory.findById(id);
 		if(product.isPresent()) {
@@ -107,11 +108,8 @@ public class ProductServiceImpl implements ProductService {
 										  double startScreen, double endScreen) {
 		List<Product> listFilterProduct = productReponsitory.findAll();
 		List<Product> filterPrice = productReponsitory.findByPriceBetween(startPrice, endPrice);
-		System.out.println(filterPrice.size());
 		List<Product> filterBattery = productReponsitory.findByBatteryRange(startBattery, endBattery);
-		System.out.println(filterBattery.size());
 		List<Product> filterScreen = productReponsitory.findByScreenSizeRange(startScreen, endScreen);
-		System.out.println(filterScreen.size());
 
 		return listFilterProduct.stream()
 				.filter(filterPrice::contains)
