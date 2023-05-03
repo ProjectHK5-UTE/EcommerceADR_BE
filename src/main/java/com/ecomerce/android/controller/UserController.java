@@ -137,8 +137,9 @@ public class UserController {
 	public ResponseEntity<?> updatePassword(@RequestParam("username") String username,
 											@RequestParam("oldPassword") String oldPassword,
 											@RequestParam("newPassword") String newPassword) {
-		if(userService.changePassword(username, oldPassword, newPassword)) {
-			return ResponseEntity.status(HttpStatus.OK).body("Success");
+		UserDTO userDTO = userService.changePassword(username, oldPassword, newPassword);
+		if(userDTO.getUserName() != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(userDTO);
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Failed");

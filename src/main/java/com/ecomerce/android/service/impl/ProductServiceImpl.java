@@ -62,8 +62,7 @@ public class ProductServiceImpl implements ProductService {
 		.map(product -> productMapper.convertTo(product,HomeViewDTO.class))
 		.collect(Collectors.toList());
 		
-		IntStream.range(0,ListLastedProduct.size())
-		.forEach(i -> {
+		IntStream.range(0,ListLastedProduct.size()).forEach(i -> {
 			ListLastedProductDTO.get(i).setImage(ListLastedProduct.get(i).getOptions().get(0).getImages().get(0).getPath());
 		});
 		return ListLastedProductDTO;
