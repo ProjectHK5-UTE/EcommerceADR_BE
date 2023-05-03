@@ -15,5 +15,4 @@ public class Mapper {
     public <T, U> U convertTo(T source, Class<U> targetClass) {
         return modelMapper.map(source, targetClass); 
     }
-
 }

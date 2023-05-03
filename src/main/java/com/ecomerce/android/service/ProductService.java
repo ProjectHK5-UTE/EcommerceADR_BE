@@ -16,7 +16,6 @@ public interface ProductService {
 
 	ProductDTO findById(Integer id);
 
-
 	List<ProductDTO>  getProductByBrand(Integer brandId);
 
 	List<HomeViewDTO> getLastedProduct();
