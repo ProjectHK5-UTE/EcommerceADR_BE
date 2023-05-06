@@ -133,6 +133,17 @@ public class UserController {
        
     }
 
-
+	@GetMapping(value = "/change-password")
+	public ResponseEntity<?> updatePassword(@RequestParam("username") String username,
+											@RequestParam("oldPassword") String oldPassword,
+											@RequestParam("newPassword") String newPassword) {
+		UserDTO userDTO = userService.changePassword(username, oldPassword, newPassword);
+		if(userDTO.getUserName() != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+		}
+		else {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Failed");
+		}
+	}
 
 }

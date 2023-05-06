@@ -33,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
 	public ProductDTO findById(Integer id) {
 		Optional<Product> product = productReponsitory.findById(id);
 		if(product.isPresent()) {
@@ -61,8 +62,7 @@ public class ProductServiceImpl implements ProductService {
 		.map(product -> productMapper.convertTo(product,HomeViewDTO.class))
 		.collect(Collectors.toList());
 		
-		IntStream.range(0,ListLastedProduct.size())
-		.forEach(i -> {
+		IntStream.range(0,ListLastedProduct.size()).forEach(i -> {
 			ListLastedProductDTO.get(i).setImage(ListLastedProduct.get(i).getOptions().get(0).getImages().get(0).getPath());
 		});
 		return ListLastedProductDTO;
@@ -131,11 +131,8 @@ public class ProductServiceImpl implements ProductService {
 										  double startScreen, double endScreen) {
 		List<Product> listFilterProduct = productReponsitory.findAll();
 		List<Product> filterPrice = productReponsitory.findByPriceBetween(startPrice, endPrice);
-		System.out.println(filterPrice.size());
 		List<Product> filterBattery = productReponsitory.findByBatteryRange(startBattery, endBattery);
-		System.out.println(filterBattery.size());
 		List<Product> filterScreen = productReponsitory.findByScreenSizeRange(startScreen, endScreen);
-		System.out.println(filterScreen.size());
 
 		return listFilterProduct.stream()
 				.filter(filterPrice::contains)
