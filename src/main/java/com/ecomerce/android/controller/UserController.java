@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.ecomerce.android.config.uploadFile.IStorageService;
+import com.ecomerce.android.dto.ResponseObject;
 import com.ecomerce.android.dto.UserDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,10 +140,14 @@ public class UserController {
 											@RequestParam("newPassword") String newPassword) {
 		UserDTO userDTO = userService.changePassword(username, oldPassword, newPassword);
 		if(userDTO.getUserName() != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject("Success", "Update Password Successfully", userDTO)
+			);
 		}
 		else {
-			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Failed");
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+					new ResponseObject("Failed", "Error", "")
+			);
 		}
 	}
 
