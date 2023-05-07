@@ -3,6 +3,7 @@ package com.ecomerce.android.controller;
 import java.util.Optional;
 
 import com.ecomerce.android.dto.ProductDTO;
+import com.ecomerce.android.dto.ResponseObject;
 import com.ecomerce.android.model.Product;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,14 @@ public class ProductController {
 	public ResponseEntity<?> findById(@RequestParam("id") Integer productId) {
 		ProductDTO productDTO = productService.findById(productId);
 		if(productDTO != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(productDTO);
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject("Success", "Find Product Successfully", productDTO)
+			);
 		}
 		else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ProductId not exist");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new ResponseObject("Failed", "Not Product In DB", "")
+			);
 		}
 	}
 
@@ -69,10 +74,14 @@ public class ProductController {
 	@GetMapping(value = "/product/search")
 	public ResponseEntity<?> searchProduct(@RequestParam("keyword") String keyword) {
 		if(productService.searchProduct(keyword) == null) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Không có sản phẩm nào");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new ResponseObject("Failed", "Not Product In DB", "")
+			);
 		}
 		else {
-			return ResponseEntity.status(HttpStatus.OK).body(productService.searchProduct(keyword));
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponseObject("Success", "Find Customer Successfully",productService.searchProduct(keyword))
+			);
 		}
 	}
 
