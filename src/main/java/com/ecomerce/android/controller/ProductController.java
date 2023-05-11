@@ -41,13 +41,25 @@ public class ProductController {
 	}
 
 	// Lấy 1 sản phẩm theo Id sản phẩm
+//	@GetMapping(value = "/product/get")
+//	public ResponseEntity<?> findById(@RequestParam("id") Integer productId) {
+//		ProductDTO productDTO = productService.findById(productId);
+//		if(productDTO != null) {
+//			return ResponseEntity.status(HttpStatus.OK).body(
+//					new ResponseObject("Success", "Find Product Successfully", productDTO)
+//			);
+//		}
+//		else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+//					new ResponseObject("Failed", "Not Product In DB", "")
+//			);
+//		}
+//	}
 	@GetMapping(value = "/product/get")
 	public ResponseEntity<?> findById(@RequestParam("id") Integer productId) {
 		ProductDTO productDTO = productService.findById(productId);
 		if(productDTO != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(
-					new ResponseObject("Success", "Find Product Successfully", productDTO)
-			);
+			return ResponseEntity.status(HttpStatus.OK).body(productDTO);
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
