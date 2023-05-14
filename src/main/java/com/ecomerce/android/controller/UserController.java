@@ -161,6 +161,33 @@ public class UserController {
 		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);
        
     }
+	@RequestMapping(value="/SignUp/check-signup", method = RequestMethod.GET)
+    public ResponseEntity<ResponseDTO> getAllUserName(HttpServletRequest request,
+    		@RequestParam("username") String username,
+    		@RequestParam("email") String email){
+		ResponseDTO responseDTO = new ResponseDTO();
+		responseDTO.setMessage("");
+		responseDTO.setHttpcode(null);
+
+		try {
+			List<String> listUsername = userService.getAllUsername();
+			List<String> listEmail = userService.getAllEmail();
+			
+			if (listUsername.contains(username) || listEmail.contains(email) ) {
+				responseDTO.setMessage("Check User Sign Up Fail");
+				responseDTO.setHttpcode(HttpStatus.BAD_REQUEST);
+			} else {
+				responseDTO.setMessage("Check User Sign Up Success");
+				responseDTO.setHttpcode(HttpStatus.OK);
+			}
+		} catch (Exception ex) {
+			System.out.print(ex.toString());
+			responseDTO.setMessage("Server Error");
+			responseDTO.setHttpcode(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);
+       
+    }
 
 	@GetMapping(value = "/change-password")
 	public ResponseEntity<?> updatePassword(@RequestParam("username") String username,

@@ -100,4 +100,16 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userRepository.getUsernameByEmail(email);
 	}
+
+	@Override
+	public List<String> getAllUsername() {
+		// TODO Auto-generated method stub
+		return userRepository.getAllUsername();
+	}
+
+	@Override
+	public List<String> getAllEmail() {
+		// TODO Auto-generated method stub
+		return userRepository.getAllEmail();
+	}
 }
