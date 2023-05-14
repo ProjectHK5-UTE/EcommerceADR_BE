@@ -94,4 +94,10 @@ public class UserServiceImpl implements UserService {
 		User userNew = userRepository.save(user);
 		return mapper.convertTo(userNew, UserDTO.class);
 	}
+
+	@Override
+	public String getUsernameByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userRepository.getUsernameByEmail(email);
+	}
 }

@@ -61,7 +61,7 @@ public class SecurityConfiguration   {
 				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER")
 				.requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("ADMIN","USER")
 				.requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN","USER")
-				.requestMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN").and()
+				.requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("ADMIN","USER").and()
 				.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
 		return http.build();
