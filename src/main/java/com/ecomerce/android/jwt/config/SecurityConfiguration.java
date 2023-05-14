@@ -57,6 +57,7 @@ public class SecurityConfiguration   {
 		http.authorizeHttpRequests().requestMatchers("/api/user/login**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp/Verify**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp/check-signup**").permitAll();
+		http.authorizeHttpRequests().requestMatchers("/api/user/getUserName**").permitAll();
 		http.httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
 				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER")
