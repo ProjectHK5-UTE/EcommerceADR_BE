@@ -147,6 +147,8 @@ public class UserController {
 		responseDTO.setHttpcode(null);
 
 		try {
+			System.out.println("Email là" + email);
+			System.out.println("Email là"+userService.getUsernameByEmail(email));
 			if (userService.getUsernameByEmail(email) != null) {
 				responseDTO.setMessage(userService.getUsernameByEmail(email));
 				responseDTO.setHttpcode(HttpStatus.OK);
@@ -156,6 +158,7 @@ public class UserController {
 			}
 		} catch (Exception ex) {
 			responseDTO.setMessage("Server Error");
+			System.out.println(ex.getMessage());
 			responseDTO.setHttpcode(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return ResponseEntity.status(responseDTO.getHttpcode()).body(responseDTO);

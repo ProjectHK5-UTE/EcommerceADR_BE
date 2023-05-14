@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, String>, QueryByExam
 	Optional<User> getByEmail(String email);
 	
 	@Query("select u.userName from User u where u.email=:email")
-	String getUsernameByEmail(String email);
+	String getUsernameByEmail(@Param("email") String email);
 	
 	@Query("select u.userName from User u")
 	List<String> getAllUsername();
