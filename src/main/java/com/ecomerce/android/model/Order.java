@@ -38,14 +38,15 @@ public class Order implements Serializable {
 
 	@Column(name="update_at")
 	private Timestamp updateAt;
-
-
+	private Status status;
 	@OneToMany(mappedBy="order", cascade = CascadeType.PERSIST)
 	private List<Lineitem> lineitems;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userName")
 	private Customer customer;
+
+
 
 	@PrePersist
 	public void prePersist() {
