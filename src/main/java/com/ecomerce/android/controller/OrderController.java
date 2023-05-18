@@ -2,6 +2,7 @@ package com.ecomerce.android.controller;
 
 import com.ecomerce.android.dto.OrderDTO;
 import com.ecomerce.android.dto.ResponseObject;
+import com.ecomerce.android.model.Status;
 import com.ecomerce.android.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,21 @@ public class OrderController {
     @GetMapping("/order/{username}")
     public ResponseEntity<?> getOrderByUsername(@PathVariable("username") String username) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderByUsername(username));
+    }
+
+    @GetMapping("/order/update-status/{orderId}/{status}")
+    public ResponseEntity<?> updateStatus(@PathVariable("orderId") Integer orderId,
+                                          @PathVariable("status") Status status) {
+        if(orderService.updateStatus(orderId, status) != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Success", "Update Status Successfully", ""));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("Error", "Order ID cannot exist in db", ""));
+        }
+    }
+
+    @GetMapping("/order/getOrder/{status}")
+    public ResponseEntity<?> getOrderByStatus(@PathVariable("status") Status status) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderByStatus(status));
     }
 }

@@ -1,6 +1,5 @@
 package com.ecomerce.android.service.impl;
 
-import com.ecomerce.android.dto.LineitemDTO;
 import com.ecomerce.android.dto.OrderDTO;
 import com.ecomerce.android.mapper.Mapper;
 import com.ecomerce.android.model.*;
@@ -16,12 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.JstlUtils;
 
-import javax.sound.sampled.Line;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,6 +116,27 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDTO> getOrderByUsername(String username) {
         return orderRepository.getOrderByUsername(username)
+                .stream()
+                .map(order -> mapper.convertTo(order, OrderDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDTO updateStatus(Integer orderId, Status status) {
+        try {
+            Order newOrder = orderRepository.findById(orderId).get();
+            newOrder.setStatus(status);
+            return mapper.convertTo(orderRepository.save(newOrder), OrderDTO.class);
+        }
+        catch (Exception ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<OrderDTO> getOrderByStatus(Status status) {
+        return orderRepository
+                .findByStatus(status)
                 .stream()
                 .map(order -> mapper.convertTo(order, OrderDTO.class))
                 .collect(Collectors.toList());

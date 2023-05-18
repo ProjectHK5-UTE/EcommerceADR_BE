@@ -2,6 +2,7 @@ package com.ecomerce.android.dto;
 
 import com.ecomerce.android.model.Customer;
 import com.ecomerce.android.model.Lineitem;
+import com.ecomerce.android.model.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ public class OrderDTO {
     private int orderId;
 
     private double totalPrice;
+
+    private Status status;
 
     private List<LineitemDTO> lineitems;
 

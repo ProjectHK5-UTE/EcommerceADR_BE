@@ -1,6 +1,7 @@
 package com.ecomerce.android.responsitory;
 
 import com.ecomerce.android.model.Order;
+import com.ecomerce.android.model.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +36,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "select count(*) from Product p WHERE YEAR(p.updateAt) = YEAR(CURRENT_DATE) and MONTH(p.updateAt) = MONTH(CURRENT_DATE)")
     Double countProducts();
+
+    List<Order> findByStatus(Status status);
 }
