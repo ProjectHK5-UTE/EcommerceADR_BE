@@ -38,4 +38,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Double countProducts();
 
     List<Order> findByStatus(Status status);
+    
+    @Query(value = "SELECT * FROM `orders` WHERE order_ID =:orderId", nativeQuery = true)
+    Order getOrderByID(@Param("orderId") Integer orderId);
 }

@@ -45,7 +45,9 @@ public class Order implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userName")
 	private Customer customer;
-
+	
+	@Column(name="order_date")
+	private Timestamp order_date;
 
 
 	@PrePersist

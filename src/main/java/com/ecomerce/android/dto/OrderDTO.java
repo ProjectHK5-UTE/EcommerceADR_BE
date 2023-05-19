@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDTO {
     private int orderId;
-
+    
     private double totalPrice;
 
     private Status status;
@@ -24,5 +25,6 @@ public class OrderDTO {
     private List<LineitemDTO> lineitems;
 
     private CustomerDTO customer;
-//    private List<LineitemDTO> lineitems;
+    
+    private Timestamp order_date;
 }
