@@ -32,5 +32,5 @@ public interface ProductService {
                                    int startBattery, int endBattery,
                                    double startScreen, double endScreen);
 
-    Boolean updateImage(Integer id, MultipartFile file) throws IOException;
+    Boolean updateImage(Integer id, MultipartFile file) throws IOException;  
 }
