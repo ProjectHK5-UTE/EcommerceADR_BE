@@ -65,4 +65,9 @@ public class OrderController {
     public ResponseEntity<?> getOrderByStatus(@PathVariable("status") Status status) {
         return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderByStatus(status));
     }
+    
+    @GetMapping("/order/getOrderByID/{orderId}")
+    public ResponseEntity<?> getOrderByID(@PathVariable("orderId") Integer orderId) {
+        return ResponseEntity.status(HttpStatus.OK).body(orderService.getOrderByID(orderId));
+    }
 }

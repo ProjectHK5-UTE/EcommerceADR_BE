@@ -53,6 +53,9 @@ public class SecurityConfiguration   {
 //				.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
 //		return http.build();
 		http.csrf().ignoringRequestMatchers("/api/**");
+		http.authorizeHttpRequests().requestMatchers("/api/order/updateStatus/**").permitAll();
+		http.authorizeHttpRequests().requestMatchers("/api/getProductId**").permitAll();
+		http.authorizeHttpRequests().requestMatchers("/api/order/getOrder**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/login**").permitAll();
 		http.authorizeHttpRequests().requestMatchers("/api/user/SignUp/Verify**").permitAll();

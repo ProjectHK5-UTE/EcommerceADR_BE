@@ -45,13 +45,16 @@ public class Order implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userName")
 	private Customer customer;
-
+	
+	@Column(name="order_date")
+	private Timestamp order_date;
 
 
 	@PrePersist
 	public void prePersist() {
 		this.createdAt = Timestamp.valueOf(LocalDateTime.now());
 		this.updateAt = Timestamp.valueOf(LocalDateTime.now());
+		this.order_date = Timestamp.valueOf(LocalDateTime.now());
 	}
 
 	@PreUpdate

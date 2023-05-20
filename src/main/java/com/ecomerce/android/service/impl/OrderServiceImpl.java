@@ -141,4 +141,10 @@ public class OrderServiceImpl implements OrderService {
                 .map(order -> mapper.convertTo(order, OrderDTO.class))
                 .collect(Collectors.toList());
     }
+    
+    @Override
+    public OrderDTO getOrderByID(Integer orderId) {
+    	Order order = orderRepository.getOrderByID(orderId);
+        return mapper.convertTo(order, OrderDTO.class);
+    }
 }

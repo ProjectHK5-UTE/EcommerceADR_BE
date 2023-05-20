@@ -21,4 +21,6 @@ public interface OrderService {
     OrderDTO updateStatus(Integer orderId, Status status);
 
     List<OrderDTO> getOrderByStatus(Status status);
+    
+    OrderDTO getOrderByID(Integer orderId);
 }
