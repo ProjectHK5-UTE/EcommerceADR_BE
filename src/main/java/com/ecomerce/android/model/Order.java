@@ -54,6 +54,7 @@ public class Order implements Serializable {
 	public void prePersist() {
 		this.createdAt = Timestamp.valueOf(LocalDateTime.now());
 		this.updateAt = Timestamp.valueOf(LocalDateTime.now());
+		this.order_date = Timestamp.valueOf(LocalDateTime.now());
 	}
 
 	@PreUpdate
