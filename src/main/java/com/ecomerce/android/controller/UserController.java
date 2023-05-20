@@ -73,10 +73,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/SignUp", method = RequestMethod.POST)
 	public ResponseEntity<ResponseDTO> sendMail(@RequestBody User user) {	
-		
 		if(otpService.generateOtp(user.getEmail(), responseDTO)) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			user.setRole("ROLE_USER");
 			User = user;
 			System.out.print(user.getEmail());
 			System.out.println(User.getUserName() + " " + User.getEmail());

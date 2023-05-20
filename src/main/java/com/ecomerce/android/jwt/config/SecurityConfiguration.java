@@ -60,10 +60,10 @@ public class SecurityConfiguration   {
 		http.authorizeHttpRequests().requestMatchers("/api/user/getUserName**").permitAll();
 		http.httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeHttpRequests()
-				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER")
-				.requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("ADMIN","USER")
-				.requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN","USER")
-				.requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("ADMIN","USER").and()
+				.requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER","MANAGER")
+				.requestMatchers(HttpMethod.POST, "/api/**").hasAnyRole("ADMIN","USER","MANAGER")
+				.requestMatchers(HttpMethod.PUT, "/api/**").hasAnyRole("ADMIN","USER","MANAGER")
+				.requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyRole("ADMIN","USER","MANAGER").and()
 				.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
 		return http.build();
