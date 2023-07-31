@@ -76,16 +76,16 @@ public class OtpService {
     /**
      * Method for validating provided OTP
      *
-     * @param key - provided key
+     * @param email - provided key
      * @param otpNumber - provided OTP number
      * @return boolean value (true|false)
      */
-	public Boolean validateOTP(String key, Integer otpNumber, ResponseDTO responseDTO) {
+	public Boolean validateOTP(String email, Integer otpNumber, ResponseDTO responseDTO) {
 		try {
 			// get OTP from cache
-			Integer cacheOTP = otpGenerator.getOPTByKey(key);
+			Integer cacheOTP = otpGenerator.getOPTByKey(email);
 			if (cacheOTP != null && cacheOTP.equals(otpNumber)) {
-				otpGenerator.clearOTPFromCache(key);
+				otpGenerator.clearOTPFromCache(email);
 				responseDTO.setMessage("GET OTP Success!!!");
 				return true;
 			}
